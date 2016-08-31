@@ -1,26 +1,31 @@
 class Hexagon {
   float x, y; // actual xy position
-  boolean set;
+  boolean state, nextState;
   ArrayList <Hexagon> neighbours = new ArrayList <Hexagon> (); // arrayList to store the neighbours
 
   Hexagon(int i, int j) {
-    x = 3*hexagonRadius*(i+((j%2==0)?0:0.5)); // calculate the actual x position within the sketch window
-    y = 0.866*hexagonRadius*j; // calculate the actual y position within the sketch window
-    set = false;
+    x = offsetX + 3*hexagonRadius*(i+((j%2==0)?0:0.5f)); // calculate the actual x position within the sketch window
+    y = offsetY + 0.866f*hexagonRadius*j; // calculate the actual y position within the sketch window
+    state = nextState = false;
   }
   
   Hexagon(Hexagon h){
     this.x = h.x;
     this.y = h.y;
-    this.set = h.set;
+    this.state = h.state;
+    this.nextState = h.nextState;
   }
 
-  void toogle() {
-    set = ! set;
+  public void step() {
+    state = nextState;
   }
   
-  void set(boolean b){
-    set = b;
+  public void set(boolean b){
+    state = b;
+  }
+  
+  public void setNext(boolean b){
+    nextState = b;
   }
 
   // given a distance parameter, this will add all the neighbours within range to the list
@@ -40,7 +45,7 @@ class Hexagon {
   void display() {
     pushMatrix();
     translate(x, y);
-    if(set) fill(255);
+    if(state) fill(255);
     else    fill(128);
     beginShape();
     for (int i=0; i<6; i++) { vertex(v[i].x, v[i].y); }

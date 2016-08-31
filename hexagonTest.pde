@@ -3,12 +3,16 @@ import java.util.*;
 
 float hexagonRadius = 10; // the radius of the individual hexagon cell
 float hexagonStroke = 1; // stroke weight around hexagons (simulated! much faster than using the stroke() method)
-color strokeColor = color(0); // stroke color around hexagons (simulated! much faster than using the stroke() method)
+int strokeColor = color(0); // stroke color around hexagons (simulated! much faster than using the stroke() method)
 float neighbourDistance = hexagonRadius*2; // the default distance to include up to 6 neighbours
 
 boolean play = false;
 boolean step = false;
 Hexagon initial = null;
+PVector box = new PVector(600,600);
+int offsetX = 50;
+int offsetY = 50;
+int iteration;
 
 ArrayList <Hexagon> grid = new ArrayList <Hexagon> (); // the arrayList to store the whole grid of cells
 PVector[] v = new PVector[6]; // an array to store the 6 pre-calculated vertex positions of a hexagon
@@ -33,49 +37,51 @@ void draw() {
 }
 
 void iterate() {
-  ArrayList <Hexagon> auxGrid = new ArrayList <Hexagon> ();
-  for (Hexagon h : grid) auxGrid.add(new Hexagon(h));
-  for (int i= 0; i < auxGrid.size(); i++) {
-    Hexagon h = grid.get(i);
-    Hexagon haux = auxGrid.get(i);
-    haux.getNeighbours(neighbourDistance, auxGrid);
+  iteration++;
+  for (Hexagon h : grid){
     int count = 0;
-    
     for (Hexagon n : h.neighbours)
-      if (n.set) count++; 
-    if (h.set && count != 3)  // death rule
-      haux.toogle();
-    if (count == 2 && ! h.set) // birth rule
-      haux.toogle();
+      if (n.state) count++;
+      
+    if (h.state && count != 3)  // death rule
+      h.setNext(false);
+    if (count == 2 && ! h.state) // birth rule
+      h.setNext(true);
   }
-  grid.clear();
-  grid = auxGrid;
+  for (Hexagon h : grid) h.step();
 }
 
-void display() {
+public void display() {
   for (Hexagon h : grid)
     h.display();
+  fill(0);
+  rect(0,0,width,offsetY);
+  rect(0,0,offsetX,height);
+  rect(0,height-offsetY,width,offsetY);
+  rect(width-offsetX,0,offsetX,height);
+  fill(255);
+  text("Iteration: "+iteration,offsetX, height-offsetY/2);
 }
 
 void mouseDragged() { // Keep writing or erasing
   Hexagon h = getHex(mouseX, mouseY);
-  h.set(initial.set);
+  h.set(initial.state);
 }
 
 void mousePressed() { // Writes or erases
   initial = getHex(mouseX, mouseY);
-  initial.set(!initial.set);
+  initial.set(!initial.state);
   mouseDragged();
 }
 
 Hexagon getHex(float x, float y) {
   int i, j;
-  j = round(y/(0.866*hexagonRadius));
+  j = round((y-offsetY)/(0.866f*hexagonRadius));
   if (j%2==0)
-    i = round(x/(3*hexagonRadius));
+    i = round((x-offsetX)/(3*hexagonRadius));
   else
-    i = round((x - 3*hexagonRadius*(0.5))/(3*hexagonRadius));
-  int hY = int(height/hexagonRadius/0.866)+3;
+    i = round((x - (3*hexagonRadius*(0.5f)+offsetX))/(3*hexagonRadius));
+  int hY = int(box.y/hexagonRadius/0.866f)+3;
   return grid.get(max(0, 
     min((i*hY+j), grid.size()-1)));
 }
@@ -97,9 +103,9 @@ void initGrid() {
   grid.clear(); // clear the grid
 
   // calculate horizontal grid size based on sketch width, hexagonRadius and a 'safety margin'
-  int hX = int(width/hexagonRadius/3)+2;
+  int hX = int(box.x/hexagonRadius/3)+2;
   // calculate vertical grid size based on sketch height, hexagonRadius and a 'safety margin'
-  int hY = int(height/hexagonRadius/0.866)+3;
+  int hY = int(box.y/hexagonRadius/0.866f)+3;
 
   // create the grid of hexagons
   for (int i=0; i<hX; i++) {
