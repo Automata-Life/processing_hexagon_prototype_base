@@ -9,7 +9,7 @@ float neighbourDistance = hexagonRadius*2; // the default distance to include up
 boolean play = false;
 boolean step = false;
 Hexagon initial = null;
-PVector box = new PVector(600,600);
+PVector box = new PVector(1000,1000);
 int offsetX = 50;
 int offsetY = 50;
 int iteration;
