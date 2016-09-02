@@ -1,7 +1,7 @@
 import processing.opengl.*; // the OpenGL library
 import java.util.*;
 
-float hexagonRadius = 10; // the radius of the individual hexagon cell
+float hexagonRadius = 40; // the radius of the individual hexagon cell
 float hexagonStroke = 1; // stroke weight around hexagons (simulated! much faster than using the stroke() method)
 int strokeColor = color(0); // stroke color around hexagons (simulated! much faster than using the stroke() method)
 float neighbourDistance = hexagonRadius*2; // the default distance to include up to 6 neighbours
@@ -13,6 +13,9 @@ PVector box = new PVector(1000,1000);
 int offsetX = 50;
 int offsetY = 50;
 int iteration;
+boolean[] SurvivalRules = {false,false,false,true,false,false,false};
+boolean[] BirthRules = {false,false,true,false,false,false,false};
+
 
 ArrayList <Hexagon> grid = new ArrayList <Hexagon> (); // the arrayList to store the whole grid of cells
 PVector[] v = new PVector[6]; // an array to store the 6 pre-calculated vertex positions of a hexagon
@@ -43,9 +46,10 @@ void iterate() {
     for (Hexagon n : h.neighbours)
       if (n.state) count++;
       
-    if (h.state && count != 3)  // death rule
+    h.setNext(h.state);
+    if (h.state && ! SurvivalRules[count])  // death rule
       h.setNext(false);
-    if (count == 2 && ! h.state) // birth rule
+    if (BirthRules[count] && ! h.state) // birth rule
       h.setNext(true);
   }
   for (Hexagon h : grid) h.step();
@@ -61,6 +65,31 @@ public void display() {
   rect(width-offsetX,0,offsetX,height);
   fill(255);
   text("Iteration: "+iteration,offsetX, height-offsetY/2);
+  fill(128);
+  rect(5*offsetX,height-2.6*offsetY/3,5.5*offsetX,offsetX/3);
+  fill(255);
+  text("Survival Rules: ",5*offsetX, height-2*offsetY/3);
+  for(int i = 0; i < 7; i++){
+    if(SurvivalRules[i])
+      fill(0);
+    else
+      fill(255);
+    ellipse((7.0+i/2.0)*offsetX,height-1.5*offsetY/3 - offsetX/5, offsetX/3, offsetX/3);
+  }
+  
+  translate(0,offsetX/3);
+  
+  fill(128);
+  rect(5*offsetX,height-2.6*offsetY/3,5.5*offsetX,offsetX/3);
+  fill(255);
+  text("Birth Rules: ",5*offsetX, height-2*offsetY/3);
+  for(int i = 0; i < 7; i++){
+    if(BirthRules[i])
+      fill(0);
+    else
+      fill(255);
+    ellipse((7.0+i/2.0)*offsetX,height-1.5*offsetY/3 - offsetX/5, offsetX/3, offsetX/3);
+  }
 }
 
 void mouseDragged() { // Keep writing or erasing
