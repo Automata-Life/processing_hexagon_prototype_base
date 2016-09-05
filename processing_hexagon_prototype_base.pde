@@ -58,49 +58,7 @@ void iterate() {
 public void display() {
   for (Hexagon h : grid)
     h.display();
-  fill(0);
-  rect(0,0,width,offsetY);
-  rect(0,0,offsetX,height);
-  rect(0,height-offsetY,width,offsetY);
-  rect(width-offsetX,0,offsetX,height);
-  fill(255);
-  text("Iteration: "+iteration,offsetX, height-offsetY/2);
-  fill(128);
-  rect(5*offsetX,height-2.6*offsetY/3,5.5*offsetX,offsetX/3);
-  fill(255);
-  text("Survival Rules: ",5*offsetX, height-2*offsetY/3);
-  for(int i = 0; i < 7; i++){
-    if(SurvivalRules[i])
-      fill(0);
-    else
-      fill(255);
-    ellipse((7.0+i/2.0)*offsetX,height-1.5*offsetY/3 - offsetX/5, offsetX/3, offsetX/3);
-  }
-  
-  translate(0,offsetX/3);
-  
-  fill(128);
-  rect(5*offsetX,height-2.6*offsetY/3,5.5*offsetX,offsetX/3);
-  fill(255);
-  text("Birth Rules: ",5*offsetX, height-2*offsetY/3);
-  for(int i = 0; i < 7; i++){
-    if(BirthRules[i])
-      fill(0);
-    else
-      fill(255);
-    ellipse((7.0+i/2.0)*offsetX,height-1.5*offsetY/3 - offsetX/5, offsetX/3, offsetX/3);
-  }
-}
-
-void mouseDragged() { // Keep writing or erasing
-  Hexagon h = getHex(mouseX, mouseY);
-  h.set(initial.state);
-}
-
-void mousePressed() { // Writes or erases
-  initial = getHex(mouseX, mouseY);
-  initial.set(!initial.state);
-  mouseDragged();
+  displayGUI();
 }
 
 Hexagon getHex(float x, float y) {
@@ -113,18 +71,6 @@ Hexagon getHex(float x, float y) {
   int hY = int(box.y/hexagonRadius/0.866f)+3;
   return grid.get(max(0, 
     min((i*hY+j), grid.size()-1)));
-}
-
-void keyPressed() {
-  if (key == ' ') {
-    play = ! play;
-  }
-  if (key == 'r' || key == 'R')
-    initGrid();
-  if (key == CODED) {
-    if (keyCode == RIGHT)
-      step = true;
-  }
 }
 
 // do everything needed to start up the grid ONCE
