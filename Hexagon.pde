@@ -49,7 +49,7 @@ class Hexagon {
     else    fill(128);
     beginShape();
     for (int i=0; i<6; i++) { vertex(v[i].x, v[i].y); }
-    endShape();
+    endShape(CLOSE);
     popMatrix();
   }
 }

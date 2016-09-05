@@ -1,8 +1,8 @@
 import processing.opengl.*; // the OpenGL library
 import java.util.*;
 
-float hexagonRadius = 40; // the radius of the individual hexagon cell
-float hexagonStroke = 1; // stroke weight around hexagons (simulated! much faster than using the stroke() method)
+float hexagonRadius = 10; // the radius of the individual hexagon cell
+float hexagonStroke = 3; // stroke weight around hexagons (simulated! much faster than using the stroke() method)
 int strokeColor = color(0); // stroke color around hexagons (simulated! much faster than using the stroke() method)
 float neighbourDistance = hexagonRadius*2; // the default distance to include up to 6 neighbours
 
@@ -21,7 +21,7 @@ ArrayList <Hexagon> grid = new ArrayList <Hexagon> (); // the arrayList to store
 PVector[] v = new PVector[6]; // an array to store the 6 pre-calculated vertex positions of a hexagon
 
 void setup() {
-  size(700, 700, OPENGL); // rendering with the OpenGL renderer is significantly faster when there is a lot of on-screen geometry
+  size(700, 700, P3D); // rendering with the OpenGL renderer is significantly faster when there is a lot of on-screen geometry
   noStroke(); // turn off stroke (for the rest of the sketch) since we use a much faster simulated stroke method
   smooth(); // turn on smooth(). Note that OpenGL smoothness usually depends on local graphics cards (aka anti-aliasing) settings
   initGrid(); // initialize the CA grid of hexagons (including neighbour search and creation of hexagon vertex positions)
