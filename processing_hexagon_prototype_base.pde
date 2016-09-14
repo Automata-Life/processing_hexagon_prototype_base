@@ -1,7 +1,7 @@
 import processing.opengl.*; // the OpenGL library
 import java.util.*;
 
-float hexagonRadius = 10; // the radius of the individual hexagon cell
+float hexagonRadius = 20; // the radius of the individual hexagon cell
 float hexagonStroke = 3; // stroke weight around hexagons (simulated! much faster than using the stroke() method)
 int strokeColor = color(0); // stroke color around hexagons (simulated! much faster than using the stroke() method)
 float neighbourDistance = hexagonRadius*2; // the default distance to include up to 6 neighbours
@@ -13,8 +13,19 @@ PVector box = new PVector(1000,1000);
 int offsetX = 50;
 int offsetY = 50;
 int iteration;
-boolean[] SurvivalRules = {false,false,false,true,false,false,false};
-boolean[] BirthRules = {false,false,true,false,false,false,false};
+
+int regra = 1;
+boolean[][] SurvivalRules = {
+                             {false,false,false,true,false,false,false},
+                             {false,false,true,false,false,false,false},
+                             {false,false,false,false,true,false,false}
+                           };
+
+boolean[][] BirthRules =  {
+                             {false,false,true,false,false,false,false},
+                             {false,false,false,true,false,false,false},
+                             {false,false,true,false,true,false,false}
+                           };
 
 
 ArrayList <Hexagon> grid = new ArrayList <Hexagon> (); // the arrayList to store the whole grid of cells
@@ -42,22 +53,29 @@ void draw() {
 void iterate() {
   iteration++;
   for (Hexagon h : grid){
-    int count = 0;
+    int[] count = {0, 0, 0, 0};
     for (Hexagon n : h.neighbours)
-      if (n.state) count++;
+      count[n.type]++;
       
-    h.setNext(h.state);
-    if (h.state && ! SurvivalRules[count])  // death rule
-      h.setNext(false);
-    if (BirthRules[count] && ! h.state) // birth rule
-      h.setNext(true);
+    h.setNext(h.type);
+    
+    if (h.type > 0){
+       if(! SurvivalRules[h.type-1][count[h.type]])  // death rule
+         h.setNext(0);
+    }
+    else{
+      for(int i = 3; i>0; i--){
+        if (BirthRules[i-1][count[i]]){ // birth rule
+          h.setNext(i);
+          break;
+        }
+      }
+    }
   }
   for (Hexagon h : grid) h.step();
 }
 
 public void display() {
-  for (Hexagon h : grid)
-    h.display();
   displayGUI();
 }
 
