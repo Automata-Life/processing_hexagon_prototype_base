@@ -5,17 +5,16 @@ void mouseDragged() { // Keep writing or erasing
 
 void mousePressed() { // Writes or erases
   initial = getHex(mouseX, mouseY);
-  initial.set(regra);
+  initial.set((initial.type +1)%4);
   mouseDragged();
   for(int i = 0; i < 3; i++){
     for(int j = 0; j < 7; j++){
-      fill(255);
-      survivalButtons[i][j].update();
-      survivalButtons[i][j].pressed();
-      birthButtons[i][j].update();
-      birthButtons[i][j].pressed();
-      SurvivalRules[i][j] = survivalButtons[i][j].pressed;
-      BirthRules[i][j] = birthButtons[i][j].pressed;
+      fill(0);
+      //if (survivalButtons[i][j].pressed()) survivalButtons[i][j].update();
+      if (survivalButtons[i][j].pressed()) ellipse(survivalButtons[i][j].x,
+                                                    survivalButtons[i][j].y,
+                                                    20,20);
+      else if (birthButtons[i][j].pressed()) birthButtons[i][j].update();
     }
   }
 }
@@ -27,14 +26,12 @@ void keyPressed() {
   if (key == 'r' || key == 'R')
     initGrid();
 
-  if (key == 'a' || key == 'A')
+  if (key == 'i' || key == 'I')
     regra = 0;
-  if (key == 's' || key == 'S')
+  if (key == 'o' || key == 'O')
     regra = 1;
-  if (key == 'd' || key == 'D')
+  if (key == 'p' || key == 'P')
     regra = 2;
-  if (key == 'f' || key == 'F')
-    regra = 3;
   
   if (key == CODED) {
     if (keyCode == RIGHT)

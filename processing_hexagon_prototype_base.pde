@@ -15,18 +15,9 @@ int offsetY = 50;
 int iteration;
 
 int regra = 1;
-boolean[][] SurvivalRules = {
-                             {false,false,false,true,false,false,false},
-                             {false,false,true,false,false,false,false},
-                             {false,false,false,false,true,false,false}
-                           };
+boolean[][] SurvivalRules = new boolean[3][7];
 
-boolean[][] BirthRules =  {
-                             {false,false,true,false,false,false,false},
-                             {false,false,false,true,false,false,false},
-                             {false,false,true,false,true,false,false}
-                           };
-
+boolean[][] BirthRules = new boolean[3][7];
 
 ArrayList <Hexagon> grid = new ArrayList <Hexagon> (); // the arrayList to store the whole grid of cells
 PVector[] v = new PVector[6]; // an array to store the 6 pre-calculated vertex positions of a hexagon
@@ -36,6 +27,7 @@ void setup() {
   noStroke(); // turn off stroke (for the rest of the sketch) since we use a much faster simulated stroke method
   smooth(); // turn on smooth(). Note that OpenGL smoothness usually depends on local graphics cards (aka anti-aliasing) settings
   initGrid(); // initialize the CA grid of hexagons (including neighbour search and creation of hexagon vertex positions)
+  initGUI();
   frameRate(10);
 }
 

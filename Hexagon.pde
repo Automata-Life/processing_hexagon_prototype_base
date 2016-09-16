@@ -45,19 +45,7 @@ class Hexagon {
   void display() {
     pushMatrix();
     translate(x, y);
-    switch(type){
-      case(1):
-        fill(255,0,0);
-        break;
-      case(2):
-        fill(0,255,0);
-        break;
-      case(3):
-        fill(0,0,255);
-        break;
-      default:
-        fill(128);
-    }
+    setTypeColor(type);
     beginShape();
     for (int i=0; i<6; i++) { vertex(v[i].x, v[i].y); }
     endShape(CLOSE);
