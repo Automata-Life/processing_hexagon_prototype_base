@@ -10,9 +10,9 @@ void mousePressed() { // Writes or erases
   for(int i = 0; i < 3; i++){
     for(int j = 0; j < 7; j++){
       fill(255);
-      survivalButtons[i][j].update();
+      //survivalButtons[i][j].update();
       survivalButtons[i][j].pressed();
-      birthButtons[i][j].update();
+      //birthButtons[i][j].update();
       birthButtons[i][j].pressed();
       SurvivalRules[i][j] = survivalButtons[i][j].pressed;
       BirthRules[i][j] = birthButtons[i][j].pressed;

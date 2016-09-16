@@ -49,14 +49,6 @@ void displayGUI(){
   
   translate(2.5*offsetX,offsetY/7);
   popMatrix();
-
-  text("S RED:",survivalButtons[0][0].x - buttonSize, survivalButtons[0][0].y);
-  text("S GREEN:",survivalButtons[0][0].x - buttonSize, survivalButtons[1][0].y);
-  text("S BLUE:",survivalButtons[0][0].x - buttonSize, survivalButtons[2][0].y);
-  
-  text("B RED:",birthButtons[0][0].x - buttonSize, birthButtons[0][0].y);
-  text("B GREEN:",birthButtons[0][0].x - buttonSize, birthButtons[1][0].y);
-  text("B BLUE:",birthButtons[0][0].x - buttonSize, birthButtons[2][0].y);
   
   displayButtons();
 }
@@ -69,19 +61,15 @@ void margins(int colour){
   rect(width-offsetX,0,offsetX,height);
 }
 
-void button(float x,float y, boolean state){
-  pushStyle();
-  ellipseMode(CORNER);
-  stroke(windowStroke);
-  strokeWeight(buttonSize/5);
-  fill(windowBackground);
-  if(state)
-    fill(strokeColor);
-  ellipse(x,y,buttonSize,buttonSize);
-  popStyle();
-}
-
 void displayButtons(){
+  text("S RED:",survivalButtons[0][0].x - buttonSize, survivalButtons[0][0].y);
+  text("S GREEN:",survivalButtons[0][0].x - buttonSize, survivalButtons[1][0].y);
+  text("S BLUE:",survivalButtons[0][0].x - buttonSize, survivalButtons[2][0].y);
+  
+  text("B RED:",birthButtons[0][0].x - buttonSize, birthButtons[0][0].y);
+  text("B GREEN:",birthButtons[0][0].x - buttonSize, birthButtons[1][0].y);
+  text("B BLUE:",birthButtons[0][0].x - buttonSize, birthButtons[2][0].y);
+  
   for(int i = 0; i < 3; i++){
     for(int j = 0; j < 7; j++){
       survivalButtons[i][j].update();

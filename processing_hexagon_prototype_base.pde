@@ -15,6 +15,9 @@ int offsetY = 50;
 int iteration;
 
 int regra = 1;
+
+float SQ3  = sqrt(3);
+
 boolean[][] SurvivalRules = new boolean[3][7];
 
 boolean[][] BirthRules = new boolean[3][7];

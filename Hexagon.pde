@@ -1,11 +1,14 @@
 class Hexagon {
-  float x, y; // actual xy position
+  float x,y; // actual xy position
+  float q, r;
   ArrayList <Hexagon> neighbours = new ArrayList <Hexagon> (); // arrayList to store the neighbours
   int type, nextType;
 
   Hexagon(int i, int j) {
     x = offsetX + 3*hexagonRadius*(i+((j%2==0)?0:0.5f)); // calculate the actual x position within the sketch window
     y = offsetY + 0.866f*hexagonRadius*j; // calculate the actual y position within the sketch window
+    
+    
     type = nextType = 0;
   }
   
