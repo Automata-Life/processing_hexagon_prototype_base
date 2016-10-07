@@ -1,10 +1,12 @@
 void mouseDragged() { // Keep writing or erasing
-  Hexagon h = getHex(mouseX, mouseY);
+  Hexagon h = grid.getHex(mouseX, mouseY);
   h.set(initial.type);
 }
 
 void mousePressed() { // Writes or erases
-  initial = getHex(mouseX, mouseY);
+
+  initial = grid.getHex(mouseX, mouseY);
+  
   initial.set(regra);
   mouseDragged();
   for(int i = 0; i < 3; i++){

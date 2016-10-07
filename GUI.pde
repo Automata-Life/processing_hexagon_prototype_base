@@ -30,11 +30,11 @@ void initGUI(){
 
 
 void displayGUI(){
-  displayGrid();
+  grid.display();
   
   pushMatrix();
   textAlign(RIGHT,CENTER);
-  margins(strokeColor);
+  //margins(strokeColor);
   setTypeColor(regra);
   text("BRUSH:", 50, 10);
   rect(50,2,20,20);
@@ -106,9 +106,4 @@ void setTypeColor(int type){
       default:
         fill(128);
     }
-}
-
-void displayGrid(){
-  for (Hexagon h : grid)
-    h.display();
 }
