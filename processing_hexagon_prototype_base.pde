@@ -8,16 +8,36 @@ float neighbourDistance = hexagonRadius * 2; // the default distance to include 
 
 boolean play = false;
 boolean step = false;
+boolean started = false;
+int gameState = 0;
+int turn_ticks = 15;
+
+//0 -> empty
+//1 -> random
+//2 -> preset
+int position_mode = 0;
+
 Hexagon initial = null;
 PVector box = new PVector(1000,1000);
 int offsetX = 50;
 int offsetY = 50;
-int iteration;
+int iteration = 1;
 
 int regra = 1;
-boolean[][] SurvivalRules = new boolean[3][7];
+                                        
+//Survives for 3 and 5 neighbours 
+boolean[][] ConwaySurvivalRules = {{false,false,false,true,false, true, false},
+                                 {false,false,false,true,false, true, false},
+                                 {false,false,false,true,false, true, false}};  
+                                 
+boolean[][] SurvivalRules = ConwaySurvivalRules;
 
-boolean[][] BirthRules = new boolean[3][7];
+//Births only for 2 neighbours 
+boolean[][] ConwayBirthRules = {{false,false,true,false,false, false, false},
+                                {false,false,true,false,false, false, false},
+                                {false,false,true,false,false, false, false}};  
+
+boolean[][] BirthRules = ConwayBirthRules;
 
 int grid_height = int(box.x / (hexagonRadius / 3)) + 2;
 int grid_width  = int(box.y / (hexagonRadius / (sqrt(3) / 2))) + 3;
@@ -36,13 +56,39 @@ void setup() {
 
 void draw() {
   background(strokeColor); // background aka simulated stroke color
-  if (play)
-    iterate();
-  if (step) {
-    iterate();
-    step = false;
+  if(started) {
+    if (play){
+      if (gameState == 0 && iteration % 15 != 0) {
+         iterate();
+         delay(300);
+      }
+      else if (gameState == 0 && iteration % 15 == 0) {
+         iterate();
+         delay(300);
+         gameState = 1;
+         print("Fim Turno\n");
+      }
+      if(gameState == 1) {
+        // Logic
+        print("J1\n");
+        gameState = 2;
+      }
+      if(gameState == 2) {
+        // Logic
+        print("J2\n");
+        gameState = 0;
+      }
+    }
+    if (step) {
+      iterate();
+      step = false;
+    }
+    display();
   }
-  display();
+  else{
+    fill(255);
+    text("ARE YOU READY FOR BROA??!!", width/2 - 100, height/2);
+  }
 }
 
 void iterate() {
@@ -50,11 +96,8 @@ void iterate() {
   for (int i = 0; i < grid.grid_height; i++) {
     for (int j = 0; j < grid.grid_width; j++) {
       Hexagon h = grid.hex_grid[i][j];
-      int[] count = {0, 0, 0, 0};
       Hexagon[] neighbours = grid.getNeighbours(i,j);
-      for(Hexagon n : neighbours)
-        if(n != null)
-          count[n.type]++;
+      int[] count = grid.countNeighbours(neighbours);
       
       h.setNext(h.type);
       if (h.type > 0) {

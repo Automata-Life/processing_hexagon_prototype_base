@@ -26,8 +26,8 @@ public class Grid {
       };
       
     for(int d = 0; d < 6; d++) {
-      int neighbour_i = i + directions[parity][d][0];
-      int neighbour_j = j + directions[parity][d][1];
+      int neighbour_i = i + directions[parity][d][1];
+      int neighbour_j = j + directions[parity][d][0];
       try{
         neighbours[d] = hex_grid[neighbour_i][neighbour_j];
       }
@@ -36,12 +36,41 @@ public class Grid {
       }
     }
     return neighbours;
-  } 
+  }
+  
+  void randomize(){
+    for(int i = 0; i < grid_height; i++) {
+      for(int j = 0; j < grid_width; j++) {
+        hex_grid[i][j].set(int(random(5))%4);
+      }
+    }
+  }
+  
+  void killAll(){
+    for(int i = 0; i < grid_height; i++) {
+      for(int j = 0; j < grid_width; j++) {
+        hex_grid[i][j].set(0);
+      }
+    }
+  }
+  
+  int[] countNeighbours(Hexagon[] neighbours) {
+    int[] count = {0, 0, 0, 0};
+    for(Hexagon n : neighbours) {
+      if(n != null) {
+        count[n.type]++;
+      }
+    }
+    return count;
+  }
   
   void display() {
     for(int i = 0; i < grid_height; i++) {
       for(int j = 0; j < grid_width; j++) {
         hex_grid[i][j].display();
+        fill(0);
+        int type = countNeighbours(getNeighbours(i,j))[hex_grid[i][j].type];
+        text(type, hex_grid[i][j].x, hex_grid[i][j].y);
       }
     }
   }

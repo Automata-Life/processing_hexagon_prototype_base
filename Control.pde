@@ -22,12 +22,17 @@ void mousePressed() { // Writes or erases
   }
 }
 
+
 void keyPressed() {
   if (key == ' ') {
     play = ! play;
   }
-  if (key == 'r' || key == 'R')
+  if (key == 'r' || key == 'R'){
+    grid.killAll();
+    started = false;
+    position_mode = 0;
     initGrid();
+  }
 
   if (key == 'a' || key == 'A')
     regra = 0;
@@ -37,7 +42,17 @@ void keyPressed() {
     regra = 2;
   if (key == 'f' || key == 'F')
     regra = 3;
-  
+  if (key == 'm' && !started) {
+    position_mode = 1;
+    grid.randomize();
+    started = true;
+    // random
+  }
+  if (key == 'n' && !started) {
+    position_mode = 0;
+    started = true;
+    // empty
+  }
   if (key == CODED) {
     if (keyCode == RIGHT)
       step = true;

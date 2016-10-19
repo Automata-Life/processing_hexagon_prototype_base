@@ -6,9 +6,6 @@ class Hexagon {
   Hexagon(int i, int j) {
     x = hexagonRadius * (3. / 2.) * j;
     y = hexagonRadius * sqrt(3.) * (i + 0.5 * (j % 2));
-    
-    
-
     type = nextType = 0;
     this.i = i;
     this.j = j;

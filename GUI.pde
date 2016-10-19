@@ -5,24 +5,40 @@ int buttonSize = 15;
 CircleButton[][] survivalButtons = new CircleButton[3][7];
 CircleButton[][] birthButtons = new CircleButton[3][7];
 
-
 void initGUI(){
   pushMatrix();
   for(int i = 0; i < 3; i++)
     for(int j = 0; j< 7; j++){
+      color SurvivalHigh = color(128,128,255);
+      color SurvivalBase = color(255,128,128);
+      color BirthHigh = color(128,128,255);
+      color BirthBase = color(255,128,128);
+      
+      if (SurvivalRules[i][j]){
+        color aux = SurvivalHigh;
+        SurvivalHigh = SurvivalBase;
+        SurvivalBase = aux;
+      }
+      
+      if (BirthRules[i][j]){
+        color aux = BirthHigh;
+        BirthHigh = BirthBase;
+        BirthBase = aux;
+      }
+      
       survivalButtons[i][j] = 
         new CircleButton((int)((1.0+j/2.0)*offsetX + 3.5*offsetX),
                          (int)(i*buttonSize + height - 6*offsetY/7 + hexagonStroke), 
                               buttonSize,
-                              color(128,128,255),
-                              color(255,128,128), SurvivalRules[i][j]);
+                              SurvivalBase,
+                              SurvivalHigh , SurvivalRules[i][j]);
 
       birthButtons[i][j] = 
         new CircleButton((int)((6.0+j/2.0)*offsetX + 3.5*offsetX),
                          (int)(i*buttonSize + height - 6*offsetY/7 + hexagonStroke), 
                               buttonSize,
-                              color(128,255,128),
-                              color(255,128,255), BirthRules[i][j]);
+                              BirthBase,
+                              BirthHigh, BirthRules[i][j]);
     }
     
   popMatrix();
@@ -34,7 +50,7 @@ void displayGUI(){
   
   pushMatrix();
   textAlign(RIGHT,CENTER);
-  //margins(strokeColor);
+  margins(strokeColor);
   setTypeColor(regra);
   text("BRUSH:", 50, 10);
   rect(50,2,20,20);
@@ -42,7 +58,7 @@ void displayGUI(){
   translate(offsetX, height - offsetY + hexagonStroke);
   
   fill(windowBackground);
-  rect(0,0,width - 2*offsetX,offsetY);
+  rect(0, 0, width - 2*offsetX, offsetY);
   
   fill(windowStroke);
   text("Iteration: "+iteration,1.5*offsetX, 2*hexagonStroke);
