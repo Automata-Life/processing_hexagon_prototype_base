@@ -9,6 +9,8 @@ class Button {
   boolean pressed = false;
 
   void update() {
+   if (gameState == 0)
+     return;
     if (over())
       currentcolor = highlightcolor;
     else
@@ -17,6 +19,8 @@ class Button {
 
   boolean pressed() {
     color aux;
+    if (gameState == 0)
+      return false;
     if (over) {
       aux = basecolor;
       basecolor = highlightcolor;

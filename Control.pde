@@ -1,13 +1,35 @@
 void mouseDragged() { // Keep writing or erasing
   Hexagon h = grid.getHex(mouseX, mouseY);
-  h.set(initial.type);
+  if(color_palette == 0){
+    if (h.type == gameState){
+      inserted_cells -= 1;
+      h.set(0);
+    }
+  }
+  else {
+    if (h.type == 0 && inserted_cells < cells_per_turn){
+      inserted_cells += 1;
+      h.set(color_palette);
+    }
+  }
+
 }
 
 void mousePressed() { // Writes or erases
-
   initial = grid.getHex(mouseX, mouseY);
-  
-  initial.set(regra);
+    
+  if(color_palette == 0){
+    if (initial.type == gameState){
+      inserted_cells -= 1;
+      initial.set(0);
+    }
+  }
+  else {
+    if (initial.type == 0 && inserted_cells < cells_per_turn){
+      inserted_cells += 1;
+      initial.set(color_palette);
+    }
+  }
   mouseDragged();
   for(int i = 0; i < 3; i++){
     for(int j = 0; j < 7; j++){
@@ -34,14 +56,8 @@ void keyPressed() {
     initGrid();
   }
 
-  if (key == 'a' || key == 'A')
-    regra = 0;
-  if (key == 's' || key == 'S')
-    regra = 1;
-  if (key == 'd' || key == 'D')
-    regra = 2;
-  if (key == 'f' || key == 'F')
-    regra = 3;
+  if (key == 'a' || key == 'A' && gameState > 0)
+    color_palette = (color_palette == 0) ? gameState : 0;
   if (key == 'm' && !started) {
     position_mode = 1;
     grid.randomize();
