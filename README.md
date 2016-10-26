@@ -9,6 +9,9 @@ processing.
 
 ##### Installing
 
+    git clone https://github.com/Automata-Life/processing_hexagon_prototype_base.git
+    cd processing_hexagon_prototype_base
+
     wget http://download.processing.org/processing-3.2.1-linux64.tgz
     tar xvf processing-3.2.1-linux64.tgz
 
